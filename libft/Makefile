@@ -61,7 +61,7 @@ SRCS =	ft_atoi.c\
 OBJECTS 	= $(SRCS:%.c=../build/%.o)
 BONUS_OBJS 	= $(BONUS:%.c=../build/%.o)
 CC 			= cc
-CFLAGS 		= -Wall -Werror -Wextra
+CFLAGS 		= -Wall -Werror -Wextra -O3
 DEBUG_FLAGS = -g -fsanitize=address -fcolor-diagnostics -fansi-escape-codes
 BUILD_DIR 	= ../build
 BIN_DIR 	= ../bin

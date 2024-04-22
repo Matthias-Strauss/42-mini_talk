@@ -6,19 +6,19 @@
 #    By: mstrauss <mstrauss@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/15 17:50:53 by mstrauss          #+#    #+#              #
-#    Updated: 2024/04/20 12:13:32 by mstrauss         ###   ########.fr        #
+#    Updated: 2024/04/22 18:04:03 by mstrauss         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME_CLIENT = $(BIN_DIR)/client
 NAME_SERVER = $(BIN_DIR)/server
-SRCS_SERVER= $(addprefix $(SRC_DIR)/, server.c)
-SRCS_CLIENT= $(addprefix $(SRC_DIR)/, client.c)
+SRCS_SERVER= $(addprefix $(SRC_DIR)/, server.c utils.c)
+SRCS_CLIENT= $(addprefix $(SRC_DIR)/, client.c utils.c)
 
 NAME_CLIENT_BONUS = $(BIN_DIR)/client_bonus
 NAME_SERVER_BONUS = $(BIN_DIR)/server_bonus
-SRCS_SERVER_BONUS = $(addprefix $(SRC_DIR)/, server_bonus.c)
-SRCS_CLIENT_BONUS = $(addprefix $(SRC_DIR)/, client_bonus.c)
+SRCS_SERVER_BONUS = $(addprefix $(SRC_DIR)/, server_bonus.c utils.c)
+SRCS_CLIENT_BONUS = $(addprefix $(SRC_DIR)/, client_bonus.c utils.c)
 
 OBJS_CLIENT = $(SRCS_CLIENT:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 OBJS_SERVER = $(SRCS_SERVER:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
@@ -28,7 +28,7 @@ OBJS_SERVER_BONUS = $(SRCS_SERVER_BONUS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 
 CC = cc
 
-CFLAGS			= -Wall -Werror -Wextra #-lm
+CFLAGS			= -Wall -Werror -Wextra -O3 #-lm
 DEBUG_FLAGS 	= -g -fsanitize=address -fcolor-diagnostics -fansi-escape-codes
 VALGRIND_FLAGS 	= -g
 

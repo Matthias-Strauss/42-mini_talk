@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client_bonus.c                                     :+:      :+:    :+:   */
+/*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstrauss <mstrauss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 06:33:16 by mstrauss          #+#    #+#             */
-/*   Updated: 2024/04/20 15:42:49 by mstrauss         ###   ########.fr       */
+/*   Updated: 2024/04/22 19:24:30 by mstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
 
-void	w_kill(pid_t pid, int i)
-{
-	if (kill(pid, i) == -1)
-	{
-		ft_putstr_fd("ERROR: Sending signal failed. Kill returned -1", 1);
-		exit(1);
-	}
-}
-
 void	send_len(pid_t server_pid, unsigned int len)
 {
-	send_8bit(server_pid, (char)len);
+	int	i;
+
+	i = 0;
+	while (i < 32)
+	{
+		if (len & (1 << i++))
+			w_kill(server_pid, SIGUSR1);
+		else
+			w_kill(server_pid, SIGUSR2);
+		pause();
+		// usleep(40);
+	}
 }
 
 void	send_8bit(pid_t server_pid, int b)
@@ -38,6 +40,7 @@ void	send_8bit(pid_t server_pid, int b)
 		else
 			w_kill(server_pid, SIGUSR2);
 		pause();
+		// usleep(40);
 	}
 }
 
@@ -47,18 +50,27 @@ void	send_msg(pid_t server_pid, char *str)
 
 	i = 0;
 	while (str[i])
+	{
 		send_8bit(server_pid, str[i++]);
+	}
+	// usleep(35);
 	send_8bit(server_pid, '\0');
 }
 
 void	receive_acknowledgement(int sig, siginfo_t *info, void *ucontent)
 {
+	static int	i;
+
 	(void)ucontent;
 	(void)info;
 	if (sig == SIGUSR1)
-		ft_putstr_fd("Receipt confirmed by server\n", 1);
+		pf_printf("\033[32m%d Receipt confirmed by server\033[0m\n", i++);
 	else if (sig == SIGUSR2)
-		ft_putstr_fd("End of Transmission\n", 1);
+	{
+		ft_putstr_fd("\033[34m\nEND OF TRANSMISSION\n\033[0m", 1);
+		ft_putstr_fd("\033[34mClient terminated by server\n\033[0m", 1);
+		exit(0);
+	}
 }
 
 int	main(int argc, char *argv[])
@@ -74,6 +86,7 @@ int	main(int argc, char *argv[])
 		return (1);
 	}
 	server_pid = ft_atoi(argv[1]);
+	check_pid(server_pid, argv[1]);
 	len = ft_strlen(argv[2]);
 	sig_act.sa_flags = SA_SIGINFO | SA_RESTART;
 	sigemptyset(&sig_act.sa_mask);
@@ -81,13 +94,9 @@ int	main(int argc, char *argv[])
 	sigaddset(&sig_act.sa_mask, SIGUSR2);
 	sig_act.sa_sigaction = receive_acknowledgement;
 	sigaction(SIGUSR1, &sig_act, NULL);
+	sigaction(SIGUSR2, &sig_act, NULL);
 	send_len(server_pid, len);
+	// usleep(300);
 	send_msg(server_pid, argv[2]);
 	exit(0);
 }
-
-// ERROR PROTECTIONS TO ADD:
-
-// PID is not a number
-// PID is not reachable
-//

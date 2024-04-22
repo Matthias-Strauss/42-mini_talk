@@ -6,7 +6,7 @@
 /*   By: mstrauss <mstrauss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 13:19:46 by mstrauss          #+#    #+#             */
-/*   Updated: 2024/04/02 18:14:41 by mstrauss         ###   ########.fr       */
+/*   Updated: 2024/04/22 19:34:27 by mstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 /// @param size bytesize of an object
 /// @return If successful calloc returns a pointer to allocated memory.
 /// If there is an error, they return a NULL pointer and set errno to ENOMEM.
-void	*ft_calloc(size_t count, size_t size)
+inline void	*ft_calloc(size_t count, size_t size)
 {
 	unsigned char	*ptr;
 	unsigned long	i;
