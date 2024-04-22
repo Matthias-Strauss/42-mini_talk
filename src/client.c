@@ -6,7 +6,7 @@
 /*   By: mstrauss <mstrauss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 06:33:16 by mstrauss          #+#    #+#             */
-/*   Updated: 2024/04/22 20:56:07 by mstrauss         ###   ########.fr       */
+/*   Updated: 2024/04/22 21:12:33 by mstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	send_len(pid_t server_pid, unsigned int len)
 			w_kill(server_pid, SIGUSR2);
 		write(1, "pausing\n", 8);
 		pause();
-		usleep(20);
+		usleep(10);
 		pf_printf("%d unpausing (len)\n", i - 1);
 	}
 }
@@ -43,7 +43,7 @@ void	send_8bit(pid_t server_pid, int b)
 			w_kill(server_pid, SIGUSR2);
 		write(1, "pausing\n", 8);
 		pause();
-		usleep(20);
+		usleep(10);
 		pf_printf("%d unpausing\n", i);
 	}
 }
@@ -100,7 +100,7 @@ int	main(int argc, char *argv[])
 	sigaction(SIGUSR1, &sig_act, NULL);
 	sigaction(SIGUSR2, &sig_act, NULL);
 	send_len(server_pid, len);
-	usleep(100);
+	// usleep(100);
 	send_msg(server_pid, argv[2]);
 	exit(0);
 }

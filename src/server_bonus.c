@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstrauss <mstrauss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 06:33:15 by mstrauss          #+#    #+#             */
-/*   Updated: 2024/04/22 19:39:17 by mstrauss         ###   ########.fr       */
+/*   Updated: 2024/04/22 21:08:01 by mstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char	*receive_len(int sig, pid_t client_pid, void *ucontent)
 	static int			bit_ind;
 	static unsigned int	len;
 	unsigned int		tmp_len;
+	char				*str;
 
 	(void)client_pid;
 	(void)ucontent;
@@ -42,7 +43,10 @@ char	*receive_len(int sig, pid_t client_pid, void *ucontent)
 		tmp_len = len;
 		bit_ind = 0;
 		len = 0;
-		return (ft_calloc(sizeof(char), tmp_len + 1));
+		str = ft_calloc(sizeof(char), tmp_len + 1);
+		if (!str)
+			exit(2);
+		return (str);
 	}
 	return (NULL);
 }
@@ -54,7 +58,7 @@ void	receive_8bits(int sig, siginfo_t *info, void *ucontent)
 	static char	*str;
 	static char	c;
 
-	if (!str)
+	if (!usleep(20) && !str)
 		str = receive_len(sig, info->si_pid, ucontent);
 	else if (sig == SIGUSR1)
 		c = c | (1 << bit_ind++);
@@ -62,12 +66,7 @@ void	receive_8bits(int sig, siginfo_t *info, void *ucontent)
 		bit_ind++;
 	if (bit_ind == 8)
 	{
-		if (!str)
-			str = ft_calloc(c + 1, 1);
-		if (!str)
-			exit(2);
-		else
-			str[str_ind++] = c;
+		str[str_ind++] = c;
 		if (c == '\0')
 			print_and_reset(&str, &str_ind, info->si_pid);
 		bit_ind = 0;
@@ -103,32 +102,3 @@ int	main(int argc, char *argv[])
 		pause();
 	exit(0);
 }
-
-// void	receive_8bits(int sig, siginfo_t *info, void *ucontent)
-// {
-// 	static int	bit_ind;
-// 	static int	str_ind;
-// 	static char	*str;
-// 	static char	c;
-
-// 	(void)ucontent;
-// 	usleep(10);
-// 	if (sig == SIGUSR1)
-// 		c = c | (1 << bit_ind++);
-// 	else if (sig == SIGUSR2)
-// 		bit_ind++;
-// 	if (bit_ind == 8)
-// 	{
-// 		if (!str)
-// 			str = ft_calloc(c + 1, 1);
-// 		if (!str)
-// 			exit(2);
-// 		else
-// 			str[str_ind++] = c;
-// 		if (c == '\0')
-// 			print_and_reset(&str, &str_ind, info->si_pid);
-// 		bit_ind = 0;
-// 		c = 0;
-// 	}
-// 	w_kill(info->si_pid, SIGUSR1);
-// }

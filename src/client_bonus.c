@@ -6,7 +6,7 @@
 /*   By: mstrauss <mstrauss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 06:33:16 by mstrauss          #+#    #+#             */
-/*   Updated: 2024/04/22 19:24:30 by mstrauss         ###   ########.fr       */
+/*   Updated: 2024/04/22 20:56:07 by mstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ void	send_len(pid_t server_pid, unsigned int len)
 			w_kill(server_pid, SIGUSR1);
 		else
 			w_kill(server_pid, SIGUSR2);
+		write(1, "pausing\n", 8);
 		pause();
-		// usleep(40);
+		usleep(20);
+		pf_printf("%d unpausing (len)\n", i - 1);
 	}
 }
 
@@ -39,8 +41,10 @@ void	send_8bit(pid_t server_pid, int b)
 			w_kill(server_pid, SIGUSR1);
 		else
 			w_kill(server_pid, SIGUSR2);
+		write(1, "pausing\n", 8);
 		pause();
-		// usleep(40);
+		usleep(20);
+		pf_printf("%d unpausing\n", i);
 	}
 }
 
@@ -51,9 +55,9 @@ void	send_msg(pid_t server_pid, char *str)
 	i = 0;
 	while (str[i])
 	{
+		pf_printf("Sending char:\t%c\n", str[i]);
 		send_8bit(server_pid, str[i++]);
 	}
-	// usleep(35);
 	send_8bit(server_pid, '\0');
 }
 
@@ -96,7 +100,7 @@ int	main(int argc, char *argv[])
 	sigaction(SIGUSR1, &sig_act, NULL);
 	sigaction(SIGUSR2, &sig_act, NULL);
 	send_len(server_pid, len);
-	// usleep(300);
+	usleep(100);
 	send_msg(server_pid, argv[2]);
 	exit(0);
 }

@@ -6,7 +6,7 @@
 #    By: mstrauss <mstrauss@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/15 17:50:53 by mstrauss          #+#    #+#              #
-#    Updated: 2024/04/22 18:04:03 by mstrauss         ###   ########.fr        #
+#    Updated: 2024/04/22 21:23:19 by mstrauss         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,41 +40,42 @@ BIN_DIR 	=	./bin
 LIBFT       =	$(BIN_DIR)/libft.a
 LIBFT_DBG	=	$(BIN_DIR)/libft_dbg.a
 
-all: $(LIBFT) ${NAME_CLIENT} ${NAME_SERVER}
-	mv ${NAME_CLIENT} client
-	mv ${NAME_SERVER} server
 
-client: $(LIBFT) ${NAME_CLIENT}
-server: $(LIBFT) ${NAME_SERVER}
+all: $(BIN_DIR) $(BUILD_DIR) $(LIBFT) ${NAME_CLIENT} ${NAME_SERVER}
+#	mv ${NAME_CLIENT} client
+#	mv ${NAME_SERVER} server
 
-bonus: $(LIBFT) $(NAME_CLIENT_BONUS) $(NAME_SERVER_BONUS)
-	mv ${NAME_CLIENT_BONUS} ./client_bonus # remove these lines to remove relinking
-	mv ${NAME_SERVER_BONUS} ./server_bonus #
+client: $(BIN_DIR) $(BUILD_DIR) $(LIBFT) ${NAME_CLIENT}
+server: $(BIN_DIR) $(BUILD_DIR) $(LIBFT) ${NAME_SERVER}
+
+bonus: $(BIN_DIR) $(BUILD_DIR) $(LIBFT) $(NAME_CLIENT_BONUS) $(NAME_SERVER_BONUS)
+# mv ${NAME_CLIENT_BONUS} ./client_bonus # remove these lines to remove relinking
+# mv ${NAME_SERVER_BONUS} ./server_bonus #
 
 debug: CFLAGS += $(DEBUG_FLAGS)
-debug: $(LIBFT_DBG) $(OBJS_CLIENT) $(OBJS_SERVER) 
-	mkdir -p $(BIN_DIR)
+debug: $(BIN_DIR) $(BUILD_DIR) $(LIBFT_DBG) $(OBJS_CLIENT) $(OBJS_SERVER) 
+#	mkdir -p $(BIN_DIR)
 	${CC} ${CFLAGS} -o ${NAME_CLIENT} $(OBJS_CLIENT) $(LIBFT_DBG) 
 	${CC} ${CFLAGS} -o ${NAME_SERVER} $(OBJS_SERVER) $(LIBFT_DBG) 
 
 ${NAME_CLIENT}: $(OBJS_CLIENT)
-	mkdir -p $(BIN_DIR)
+#	mkdir -p $(BIN_DIR)
 	${CC} ${CFLAGS} -o ${NAME_CLIENT} $(OBJS_CLIENT) $(LIBFT) 
 
 ${NAME_SERVER}: $(OBJS_SERVER)
-	mkdir -p $(BIN_DIR)
+#	mkdir -p $(BIN_DIR)
 	${CC} ${CFLAGS} -o ${NAME_SERVER} $(OBJS_SERVER) $(LIBFT) 
 
 ${NAME_CLIENT_BONUS}: $(OBJS_CLIENT_BONUS)
-	mkdir -p $(BIN_DIR)
+#	mkdir -p $(BIN_DIR)
 	${CC} ${CFLAGS} -o ${NAME_CLIENT_BONUS} $(OBJS_CLIENT_BONUS) $(LIBFT) 
 
 ${NAME_SERVER_BONUS}: $(OBJS_SERVER_BONUS)
-	mkdir -p $(BIN_DIR)
+#	mkdir -p $(BIN_DIR)
 	${CC} ${CFLAGS} -o ${NAME_SERVER_BONUS} $(OBJS_SERVER_BONUS) $(LIBFT) 
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	mkdir -p $(BUILD_DIR)
+#	mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
@@ -82,6 +83,9 @@ $(LIBFT):
 	
 $(LIBFT_DBG):
 	make -C $(LIBFT_DIR) debug
+
+$(BIN_DIR) $(BUILD_DIR):
+	mkdir -p $@
 
 clean:
 	make -C $(LIBFT_DIR) clean

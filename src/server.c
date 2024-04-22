@@ -6,7 +6,7 @@
 /*   By: mstrauss <mstrauss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 06:33:15 by mstrauss          #+#    #+#             */
-/*   Updated: 2024/04/22 21:05:59 by mstrauss         ###   ########.fr       */
+/*   Updated: 2024/04/22 21:12:33 by mstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	receive_8bits(int sig, siginfo_t *info, void *ucontent)
 	static char	*str;
 	static char	c;
 
-	if (!usleep(20) && !str)
+	if (!usleep(10) && !str)
 		str = receive_len(sig, info->si_pid, ucontent);
 	else if (sig == SIGUSR1)
 		c = c | (1 << bit_ind++);

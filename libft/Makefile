@@ -68,13 +68,11 @@ BIN_DIR 	= ../bin
 
 all: $(NAME)
 
-$(NAME): $(OBJECTS)
-	mkdir -p $(BIN_DIR)
+$(NAME): $(BIN_DIR) $(BUILD_DIR) $(OBJECTS)
 	ar -rcs $(BUILD_DIR)/$(NAME) $(BUILD_DIR)/$(OBJECTS)
 # 	mv ../build/libft.a ./libft.a
 
 $(BUILD_DIR)/%.o: %.c
-	mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
@@ -83,14 +81,16 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 
-re: fclean $(NAME)
+re: fclean $(BIN_DIR) $(BUILD_DIR) $(NAME)
 
 debug: CFLAGS += $(DEBUG_FLAGS)
-debug: $(NAME_DBG)
+debug: $(BIN_DIR) $(BUILD_DIR) $(NAME_DBG)
 
 $(NAME_DBG): $(OBJECTS)
 	ar -rcs $(BUILD_DIR)/$(NAME_DBG) $(BUILD_DIR)/$(OBJECTS)
 
+$(BIN_DIR) $(BUILD_DIR):
+	mkdir -p $@
 # bonus: $(OBJECTS) $(BONUS_OBJS)
 # 	ar -rcs $(NAME) $(OBJECTS) $(BONUS_OBJS)
 # 	mv *.o $(BUILD_DIR)
