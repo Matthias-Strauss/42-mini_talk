@@ -6,7 +6,7 @@
 /*   By: mstrauss <mstrauss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 06:33:16 by mstrauss          #+#    #+#             */
-/*   Updated: 2024/04/22 21:52:26 by mstrauss         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:55:45 by mstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	main(int argc, char *argv[])
 	sigaction(SIGUSR1, &sig_act, NULL);
 	sigaction(SIGUSR2, &sig_act, NULL);
 	send_len(server_pid, len);
-	// usleep(100);
+	usleep(200);
 	send_msg(server_pid, argv[2]);
 	exit(0);
 }
