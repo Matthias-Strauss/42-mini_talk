@@ -6,7 +6,7 @@
 /*   By: mstrauss <mstrauss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 00:25:05 by mstrauss          #+#    #+#             */
-/*   Updated: 2024/04/02 18:14:41 by mstrauss         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:27:47 by mstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,8 @@ int	gnl_strchr(char *s, int c)
 void	*gnl_calloc(size_t count, size_t size)
 {
 	unsigned char	*ptr;
-	unsigned long	i;
 	int				n;
 
-	i = 0;
 	n = count * size;
 	ptr = NULL;
 	ptr = malloc(n);

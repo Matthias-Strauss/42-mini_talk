@@ -6,7 +6,7 @@
 /*   By: mstrauss <mstrauss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 13:19:46 by mstrauss          #+#    #+#             */
-/*   Updated: 2024/04/22 19:34:27 by mstrauss         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:27:09 by mstrauss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@
 inline void	*ft_calloc(size_t count, size_t size)
 {
 	unsigned char	*ptr;
-	unsigned long	i;
 
-	i = 0;
 	ptr = malloc(count * size);
 	if (ptr == NULL)
 		return (NULL);
